@@ -1,16 +1,23 @@
 # stopwatch_app
 
-A new Flutter project.
+This app is a fully functioning Stopwatch app that can track laps and display a
+history of each completed lap.
 
-## Getting Started
+This app showed the basics of state management and user interaction, including:
 
-This project is a starting point for a Flutter application.
+- introduction to StatefulWidget and the basics of managing state within a Flutter
+app, enabling the creation of interactive widgets.
 
-A few resources to get you started if this is your first Flutter project:
+- customize different kinds of buttons and handle button interactions
+using onPressed.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- implemented scrolling functionality using ListView, enabling
+users to scroll long lists of items smoothly.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- explored the use of TextField widgets to manage the text input using
+TextEditingControllers.
+
+- used the Navigator widget and its methods, such as push, pop, and pushReplacement,
+to enable navigation between different screens.
+
+- displayed messages to your users showing alerts and bottom sheets.

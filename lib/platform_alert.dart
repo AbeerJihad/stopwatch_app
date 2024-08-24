@@ -6,6 +6,7 @@ class PlatformAlert {
   final String message;
 
 //platform-aware class
+
   const PlatformAlert({required this.title, required this.message});
 
   void show(BuildContext context) {

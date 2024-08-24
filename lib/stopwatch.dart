@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class StopWatch extends StatefulWidget {
@@ -8,6 +10,22 @@ class StopWatch extends StatefulWidget {
 }
 
 class _StopWatchState extends State<StopWatch> {
+  int seconds = 0;
+  late Timer timer;
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), _onTick);
+  }
+
+  void _onTick(Timer time) {
+    if (mounted) {
+      setState(() {
+        ++seconds;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,10 +34,18 @@ class _StopWatchState extends State<StopWatch> {
       ),
       body: Center(
         child: Text(
-          '0 seconds',
+          '$seconds ${_secondsText()}',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
     );
+  }
+
+  String _secondsText() => seconds == 1 ? 'second' : 'seconds';
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

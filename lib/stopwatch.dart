@@ -25,7 +25,7 @@ class _StopWatchState extends State<StopWatch> {
 
   void _startTimer() {
     laps.clear();
-    timer = Timer.periodic(Duration(milliseconds: 100), _onTick);
+    timer = Timer.periodic(const Duration(milliseconds: 100), _onTick);
     setState(() {
       milliseconds = 0;
       isTicking = true;
@@ -39,18 +39,10 @@ class _StopWatchState extends State<StopWatch> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 1), _onTick);
-  }
-
   void _onTick(Timer time) {
-    if (mounted) {
-      setState(() {
-        milliseconds += 100;
-      });
-    }
+    setState(() {
+      milliseconds += 100;
+    });
   }
 
   @override

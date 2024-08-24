@@ -15,6 +15,7 @@ class StopWatch extends StatefulWidget {
 class _StopWatchState extends State<StopWatch> {
   final itemHeight = 60.0;
   final scrollController = ScrollController();
+  final scaffoldState = GlobalKey<ScaffoldState>();
 
   int milliseconds = 0;
   late Timer timer;
@@ -50,34 +51,13 @@ class _StopWatchState extends State<StopWatch> {
     });
 
     //_showRunCompleteAlert(context);
-    showModalBottomSheet(context: context, builder: _buildRunCompleteSheet);
-  }
+    //showModalBottomSheet(context: context, builder: _buildRunCompleteSheet);
+    final controller =
+        scaffoldState.currentState!.showBottomSheet(_buildRunCompleteSheet);
 
-  Widget _buildRunCompleteSheet(BuildContext context) {
-    final totalRuntime = laps.fold(milliseconds, (total, lap) => total + lap);
-    final textTheme = Theme.of(context).textTheme;
-
-    return SafeArea(
-        child: Container(
-      color: Theme.of(context).cardColor,
-      width: double.infinity,
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30.0),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text('Run Finished!', style: textTheme.headlineSmall),
-            Text('Total Run Time is ${_secondsText(totalRuntime)}.')
-          ])),
-    ));
-  }
-
-  _showRunCompleteAlert(BuildContext context) {
-    final totalRuntime =
-        laps.fold(milliseconds, (total, lap) => total + lap); //the sum of laps
-    final alert = PlatformAlert(
-      title: 'Run Completed!',
-      message: 'Total Run Time is ${_secondsText(totalRuntime)}.',
-    );
-    alert.show(context);
+    Future.delayed(const Duration(seconds: 5)).then((_) {
+      controller.close();
+    });
   }
 
   void _onTick(Timer time) {
@@ -89,6 +69,7 @@ class _StopWatchState extends State<StopWatch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldState,
       appBar: AppBar(
         title: Text(widget.name),
       ),
@@ -182,6 +163,33 @@ class _StopWatchState extends State<StopWatch> {
         },
       ),
     );
+  }
+
+  Widget _buildRunCompleteSheet(BuildContext context) {
+    final totalRuntime = laps.fold(milliseconds, (total, lap) => total + lap);
+    final textTheme = Theme.of(context).textTheme;
+
+    return SafeArea(
+        child: Container(
+      color: Theme.of(context).cardColor,
+      width: double.infinity,
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30.0),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Text('Run Finished!', style: textTheme.headlineSmall),
+            Text('Total Run Time is ${_secondsText(totalRuntime)}.')
+          ])),
+    ));
+  }
+
+  _showRunCompleteAlert(BuildContext context) {
+    final totalRuntime =
+        laps.fold(milliseconds, (total, lap) => total + lap); //the sum of laps
+    final alert = PlatformAlert(
+      title: 'Run Completed!',
+      message: 'Total Run Time is ${_secondsText(totalRuntime)}.',
+    );
+    alert.show(context);
   }
 
   @override

@@ -44,7 +44,7 @@ class _StopWatchState extends State<StopWatch> {
     });
   }
 
-  void _stopTimer() {
+  void _stopTimer(BuildContext context) {
     timer.cancel();
     setState(() {
       isTicking = false;
@@ -52,8 +52,12 @@ class _StopWatchState extends State<StopWatch> {
 
     //_showRunCompleteAlert(context);
     //showModalBottomSheet(context: context, builder: _buildRunCompleteSheet);
-    final controller =
-        scaffoldState.currentState!.showBottomSheet(_buildRunCompleteSheet);
+    //final controller =  scaffoldState.currentState!.showBottomSheet(_buildRunCompleteSheet);
+
+    final controller = showBottomSheet(
+      context: context,
+      builder: _buildRunCompleteSheet,
+    ); //needs wrapping our stop button in a builder and pass it here so it will contains scaffold context as a parent
 
     Future.delayed(const Duration(seconds: 5)).then((_) {
       controller.close();
@@ -129,15 +133,17 @@ class _StopWatchState extends State<StopWatch> {
           onPressed: isTicking ? _lap : null,
           child: const Text('Lap'),
         ),
-        SizedBox(width: 20),
-        TextButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(Colors.red),
-            foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-          ),
-          onPressed: isTicking ? _stopTimer : null,
-          child: const Text('Stop'),
-        ),
+        const SizedBox(width: 20),
+        Builder(builder: (context) {
+          return TextButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.red),
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            ),
+            onPressed: isTicking ? () => _stopTimer(context) : null,
+            child: const Text('Stop'),
+          );
+        }),
       ],
     );
   }
